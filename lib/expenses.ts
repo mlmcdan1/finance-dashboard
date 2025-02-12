@@ -8,22 +8,24 @@ interface Expense {
     userId: string;
     description: string;
     amount: number;
+    type: "income" | "expense";
     createdAt: Date;
 }
 
 // Add Expenses
-export const addExpense = async (userId: string, description: string, amount: number) => {
-    await addDoc(expensesCollection, { userId, description, amount, createdAt: new Date() });
+export const addExpense = async (userId: string, description: string, amount: number, type: "income" | "expense") => {
+    await addDoc(expensesCollection, { userId, description, amount, type, createdAt: new Date() });
 };
 
 // Get Expenses
 export const getExpenses = async (): Promise<Expense[]> => {
     const snapshot = await getDocs(expensesCollection);
-    return snapshot.docs.map(doc => ({ 
-        id: doc.id,
-         ...doc.data() as Omit<Expense, "id">,
-    }));
+    return snapshot.docs.map(doc => {
+      const data = doc.data() as Omit<Expense, "id">; // ✅ Ensure `id` is NOT in `data`
+      return { id: doc.id, ...data }; // ✅ Now `id` is added correctly
+    });
 };
+  
 
 // Delete Expenses
 export const deleteExpense = async (id: string) => {
@@ -31,6 +33,6 @@ export const deleteExpense = async (id: string) => {
 };
 
 // Update Expenses
-export const updateExpense = async (id: string, newData: {description?: string; amount?: number}) => {
+export const updateExpense = async (id: string, newData: {description?: string; amount?: number, type: "income" | "expense"}) => {
     await updateDoc(doc(db, "expenses", id), newData);
 };

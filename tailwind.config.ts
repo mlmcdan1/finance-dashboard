@@ -1,6 +1,5 @@
-import type { Config } from "tailwindcss";
-
-export default {
+module.exports = {
+  darkMode: 'class', // This enables dark mode with a class
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -15,4 +14,4 @@ export default {
     },
   },
   plugins: [],
-} satisfies Config;
+};
