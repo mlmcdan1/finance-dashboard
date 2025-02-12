@@ -8,11 +8,28 @@ import { getExpenses } from "../../lib/expenses";
 // Register Chart.js components
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
+interface Expense {
+  id: string;
+  description: string;
+  amount: number;
+  type: "income" | "expense";
+}
+
+interface ChartData {
+  labels: string[];
+  datasets: {
+    label: string;
+    data: number[];
+    backgroundColor: string[];
+    borderWidth: number;
+  }[];
+}
+
 export default function Dashboard() {
-  const [expenses, setExpenses] = useState<any[]>([]);
+  const [expenses, setExpenses] = useState<Expense[]>([]);
   const [totalIncome, setTotalIncome] = useState(0);
   const [totalExpenses, setTotalExpenses] = useState(0);
-  const [chartData, setChartData] = useState<any>({
+  const [chartData, setChartData] = useState<ChartData>({
     labels: [],
     datasets: [],
   });
@@ -36,15 +53,19 @@ export default function Dashboard() {
     setExpenses(data);
 
     // Calculate totals
-    const income = data.filter((exp) => exp.type === "income").reduce((acc, exp) => acc + exp.amount, 0);
-    const expensesTotal = data.filter((exp) => exp.type === "expense").reduce((acc, exp) => acc + Math.abs(exp.amount), 0);
+    const income = data
+      .filter((exp: Expense) => exp.type === "income")
+      .reduce((acc, exp: Expense) => acc + exp.amount, 0);
+    const expensesTotal = data
+      .filter((exp: Expense) => exp.type === "expense")
+      .reduce((acc, exp: Expense) => acc + Math.abs(exp.amount), 0);
 
     setTotalIncome(income);
     setTotalExpenses(expensesTotal);
 
     // Prepare Chart.js Data
     const categoryTotals: Record<string, number> = {};
-    data.forEach((expense) => {
+    data.forEach((expense: Expense) => {
       if (categoryTotals[expense.description]) {
         categoryTotals[expense.description] += Math.abs(expense.amount);
       } else {

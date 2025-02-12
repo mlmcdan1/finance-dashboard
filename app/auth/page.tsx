@@ -3,7 +3,7 @@
 import { useAuth } from "../../lib/AuthContext";
 
 export default function AuthPage() {
-    const { user, signInWithGoogle, login, register, logout } = useAuth();
+    const { user, signInWithGoogle, logout } = useAuth();
 
     if (user) { 
         return (
