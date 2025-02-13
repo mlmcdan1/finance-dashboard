@@ -1,6 +1,8 @@
-"use client"; // Ensure this runs only on the client side
+"use client";
+
 import { useState, useEffect } from "react";
-import "./globals.css"; // Import global styles
+import Link from "next/link";
+import "./globals.css";
 import { AuthProvider } from "../lib/AuthContext";
 
 export default function RootLayout({
@@ -8,21 +10,19 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  // Dark mode state
-  const [darkMode, setDarkMode] = useState<boolean | null>(null); // Initially null until determined
+  const [darkMode, setDarkMode] = useState<boolean | null>(null);
 
   // Check localStorage for user preference on dark mode after mounting (client-side)
   useEffect(() => {
     const savedTheme = localStorage.getItem("darkMode") === "true";
-    setDarkMode(savedTheme); // Update the state
+    setDarkMode(savedTheme);
     if (savedTheme) {
       document.documentElement.classList.add("dark");
     } else {
       document.documentElement.classList.remove("dark");
     }
-  }, []); // Empty dependency array to only run on mount (client-side)
+  }, []);
 
-  // Handle theme toggle
   const toggleDarkMode = () => {
     const newDarkMode = !darkMode;
     setDarkMode(newDarkMode);
@@ -31,7 +31,7 @@ export default function RootLayout({
   };
 
   if (darkMode === null) {
-    return null; // Avoid rendering before we know the theme preference
+    return null; // Avoid rendering before knowing the theme preference
   }
 
   return (
@@ -46,31 +46,31 @@ export default function RootLayout({
           >
             <h2 className="text-2xl font-bold text-blue-600">Finance Dashboard</h2>
             <nav className="mt-6 space-y-4">
-              <a
+              <Link
                 href="/dashboard"
                 className={`block text-lg font-medium hover:text-blue-500 ${darkMode ? "text-white" : "text-gray-700"}`}
               >
                 📊 Dashboard
-              </a>
-              <a
+              </Link>
+              <Link
                 href="/transactions"
                 className={`block text-lg font-medium hover:text-blue-500 ${darkMode ? "text-white" : "text-gray-700"}`}
               >
                 💰 Transactions
-              </a>
-              <a
-                href="/"
+              </Link>
+              <Link
+                href="/auth"
                 className={`block text-lg font-medium hover:text-blue-500 ${darkMode ? "text-white" : "text-gray-700"}`}
               >
-                👤 Profile
-              </a>
+                👤 Login / Profile
+              </Link>
             </nav>
 
             {/* Dark Mode Toggle */}
             <div className="mt-6">
               <button
                 onClick={toggleDarkMode}
-                className={`w-full bg-blue-500 text-white p-2 rounded-md`}
+                className="w-full bg-blue-500 text-white p-2 rounded-md"
               >
                 {darkMode ? "Light Mode" : "Dark Mode"}
               </button>

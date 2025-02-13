@@ -31,7 +31,14 @@ export default function Dashboard() {
   const [totalExpenses, setTotalExpenses] = useState(0);
   const [chartData, setChartData] = useState<ChartData>({
     labels: [],
-    datasets: [],
+    datasets: [
+      {
+        label: "Total Spending",
+        data: [],
+        backgroundColor: ["#3b82f6", "#f87171", "#fbbf24", "#10b981"],
+        borderWidth: 2,
+      },
+    ],
   });
   const [darkMode, setDarkMode] = useState(false);
 
@@ -55,10 +62,10 @@ export default function Dashboard() {
     // Calculate totals
     const income = data
       .filter((exp: Expense) => exp.type === "income")
-      .reduce((acc, exp: Expense) => acc + exp.amount, 0);
+      .reduce((acc: number, exp: Expense) => acc + exp.amount, 0);
     const expensesTotal = data
       .filter((exp: Expense) => exp.type === "expense")
-      .reduce((acc, exp: Expense) => acc + Math.abs(exp.amount), 0);
+      .reduce((acc: number, exp: Expense) => acc + Math.abs(exp.amount), 0);
 
     setTotalIncome(income);
     setTotalExpenses(expensesTotal);

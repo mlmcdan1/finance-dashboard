@@ -1,24 +1,40 @@
 "use client";
 
-"use client";
-
+import { useEffect, useState } from "react";
 import { Bar } from "react-chartjs-2";
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from "chart.js";
-import { useEffect, useState } from "react";
 import { getExpenses } from "../../lib/expenses";
 
 // Register Chart.js components
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
+// Type for Expense
+interface Expense {
+  description: string;
+  amount: number;
+}
+
+// Type for Chart data
+interface ChartData {
+  labels: string[];
+  datasets: {
+    label: string;
+    data: number[];
+    backgroundColor: string[];  // Ensure this is an array of strings
+    borderColor: string[];      // Include borderColor as an array of strings
+    borderWidth: number;
+  }[];
+}
+
 export default function ExpenseChart() {
-  const [chartData, setChartData] = useState<any>({
+  const [chartData, setChartData] = useState<ChartData>({
     labels: [],
     datasets: [],
   });
 
   useEffect(() => {
     const fetchExpenses = async () => {
-      const expenses = await getExpenses();
+      const expenses: Expense[] = await getExpenses(); // Assuming getExpenses returns an array of Expense objects
 
       // Group expenses by category
       const categoryTotals: Record<string, number> = {};
@@ -37,8 +53,8 @@ export default function ExpenseChart() {
           {
             label: "Total Spending",
             data: Object.values(categoryTotals),
-            backgroundColor: "rgba(75, 192, 192, 0.6)",
-            borderColor: "rgba(75, 192, 192, 1)",
+            backgroundColor: ["rgba(75, 192, 192, 0.6)"], // Ensure this is an array
+            borderColor: ["rgba(75, 192, 192, 1)"],   // Add borderColor as an array
             borderWidth: 1,
           },
         ],
