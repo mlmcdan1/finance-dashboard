@@ -26,6 +26,7 @@ interface ChartData {
 }
 
 export default function Dashboard() {
+
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [totalIncome, setTotalIncome] = useState(0);
   const [totalExpenses, setTotalExpenses] = useState(0);
@@ -110,6 +111,7 @@ export default function Dashboard() {
           <h3 className="text-lg font-semibold">📈 Income vs Expenses</h3>
           <p className="text-xl font-bold text-green-500">Income: ${totalIncome}</p>
           <p className="text-xl font-bold text-red-500">Expenses: ${totalExpenses}</p>
+          <p className="text-lg">Total Transactions: {expenses.length}</p>
         </div>
 
         <div className={`p-6 shadow-md rounded-lg ${darkMode ? "bg-gray-800 text-white" : "bg-white text-gray-900"}`}>

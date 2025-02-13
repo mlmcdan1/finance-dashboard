@@ -19,7 +19,7 @@ interface AuthContextType {
 }
 
 // Provide a default empty object to prevent `null` errors
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+const AuthContext = createContext<AuthContextType>({} as AuthContextType);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [user, setUser] = useState<any>(null);
