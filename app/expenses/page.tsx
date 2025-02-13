@@ -5,9 +5,16 @@ import { addExpense, getExpenses, deleteExpense } from "../../lib/expenses";
 import { useAuth } from "../../lib/AuthContext";
 import ExpensesChart from "../components/ExpenseChart";
 
+// Define the Expense type
+interface Expense {
+    id: string;
+    description: string;
+    amount: number;
+}
+
 export default function ExpensesPage() {
     const { user } = useAuth();
-    const [expenses, setExpenses] = useState<any[]>([]);
+    const [expenses, setExpenses] = useState<Expense[]>([]);
     const [description, setDescription] = useState("");
     const [amount, setAmount] = useState("");
 
@@ -25,7 +32,11 @@ export default function ExpensesPage() {
     const handleAddExpense = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!user) return;
-        await addExpense(user.uid, description, parseFloat(amount));
+
+        
+        const type: "income" | "expense" = "expense"
+        ;
+        await addExpense(user.uid, description, parseFloat(amount), type);
         setDescription("");
         setAmount("");
         fetchExpenses();

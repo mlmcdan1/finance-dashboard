@@ -4,9 +4,17 @@ import { useEffect, useState } from "react";
 import { addExpense, getExpenses, deleteExpense, updateExpense } from "../../lib/expenses";
 import { useAuth } from "../../lib/AuthContext";
 
+// Define the Transaction type
+interface Transaction {
+  id: string;
+  description: string;
+  amount: number;
+  type: "income" | "expense";
+}
+
 export default function TransactionsPage() {
   const { user } = useAuth();
-  const [expenses, setExpenses] = useState<any[]>([]);
+  const [expenses, setExpenses] = useState<Transaction[]>([]);
   const [description, setDescription] = useState("");
   const [amount, setAmount] = useState("");
   const [type, setType] = useState<"income" | "expense">("income");
@@ -49,7 +57,7 @@ export default function TransactionsPage() {
     fetchExpenses();
   };
 
-  const handleEdit = (expense: any) => {
+  const handleEdit = (expense: Transaction) => {
     setEditingId(expense.id);
     setDescription(expense.description);
     setAmount(expense.amount.toString());

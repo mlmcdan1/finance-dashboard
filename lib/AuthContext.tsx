@@ -6,11 +6,12 @@ import {
     GoogleAuthProvider, 
     signOut, 
     signInWithEmailAndPassword, 
-    createUserWithEmailAndPassword 
+    createUserWithEmailAndPassword,
+    User
 } from "firebase/auth";
 
 interface AuthContextType {
-    user: any;
+    user: User | null;
     loading: boolean;
     signInWithGoogle: () => Promise<void>;
     register: (email: string, password: string) => Promise<void>;
@@ -22,7 +23,7 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType>({} as AuthContextType);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-    const [user, setUser] = useState<any>(null);
+    const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
