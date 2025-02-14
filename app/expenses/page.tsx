@@ -33,9 +33,7 @@ export default function ExpensesPage() {
         e.preventDefault();
         if (!user) return;
 
-        
-        const type: "income" | "expense" = "expense"
-        ;
+        const type: "income" | "expense" = "expense";
         await addExpense(user.uid, description, parseFloat(amount), type);
         setDescription("");
         setAmount("");
@@ -48,7 +46,7 @@ export default function ExpensesPage() {
     }
 
     return (
-        <div className="p-6">
+        <div className="p-6 bg-white text-black"> {/* Ensured background is always white, text is black */}
             <h2 className="text-2xl font-bold mb-4">
                 Expense Tracker
             </h2>
@@ -60,14 +58,14 @@ export default function ExpensesPage() {
                     placeholder="Description"
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
-                    className="border p-2 mr-2"
+                    className="border p-2 mr-2 bg-white text-black" 
                 />
                 <input
                     type="number"
                     placeholder="Amount"
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)}
-                    className="border p-2 mr-2"
+                    className="border p-2 mr-2 bg-white text-black"  
                 />
                 <button type="submit" className="bg-blue-500 text-white px-4 py-2">
                     Add Expense
@@ -77,9 +75,9 @@ export default function ExpensesPage() {
             {/* Expense List */}
             <ul>
                 {expenses.map((expense) => (
-                    <li key={expense.id} className="flex justify-between p-2 border"> 
+                    <li key={expense.id} className="flex justify-between p-2 border">
                         <span>{expense.description} - ${expense.amount}</span>
-                        <button 
+                        <button
                             onClick={() => handleDelete(expense.id)}
                             className="bg-red-500 text-white px-2"
                         >
@@ -90,7 +88,7 @@ export default function ExpensesPage() {
             </ul>
 
             {/* Expense Chart */}
-            <ExpensesChart/>
+            <ExpensesChart />
         </div>
     );
 }
